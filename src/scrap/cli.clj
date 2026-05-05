@@ -1,5 +1,5 @@
 (ns scrap.cli
-  (:require [clojure.data.json :as json]
+  (:require [cheshire.core :as json]
             [clojure.java.io :as io]
             [scrap.analyze :as analyze]
             [scrap.guidance :as guidance]
@@ -17,12 +17,12 @@
 (defn- write-baseline!
   [path doc]
   (.mkdirs (io/file "target/scrap"))
-  (spit path (json/write-str doc))
+  (spit path (json/generate-string doc))
   path)
 
 (defn- read-json-file
   [path]
-  (json/read-str (slurp path) :key-fn keyword))
+  (json/parse-string (slurp path) true))
 
 (defn- apply-arg
   [opts remaining]

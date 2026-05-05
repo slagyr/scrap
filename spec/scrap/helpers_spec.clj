@@ -1,5 +1,5 @@
 (ns scrap.helpers-spec
-  (:require [clojure.data.json :as json]
+  (:require [cheshire.core :as json]
             [clojure.string :as str]
             [scrap.actionability :as actionability]
             [scrap.actionability-modes :as actionability-modes]
@@ -319,7 +319,7 @@
                   scrap.analyze/analyze-file (fn [path] {:path path :content-hash "new" :summary {:example-count 1}})
                   scrap.analyze/baseline-document (fn [paths reports] {:paths paths :reports reports})
                   scrap.guidance/compare-reports (fn [_ reports] (mapv #(assoc % :comparison cli-compare-stub) reports))
-                  scrap.report/render-json (fn [_ reports] (json/write-str {:count (count reports)}))
+                  scrap.report/render-json (fn [_ reports] (json/generate-string {:count (count reports)}))
                   scrap.cli/read-json-file (fn [_] {:reports [{:path "spec/a_spec.clj" :content-hash "old" :summary {:example-count 1}}]})
                   scrap.cli/write-baseline! (fn [path _] path)]
       (let [result (cli/run-cli ["spec/custom" "--json" "--write-baseline" "--compare" "baseline.json"])]
@@ -332,7 +332,7 @@
                     scrap.analyze/analyze-file (fn [path] {:path path :content-hash "new" :summary {:example-count 1}})
                     scrap.analyze/baseline-document (fn [paths reports] {:paths paths :reports reports})
                     scrap.guidance/compare-reports (fn [_ reports] (mapv #(assoc % :comparison cli-compare-stub) reports))
-                    scrap.report/render-json (fn [_ reports] (json/write-str {:count (count reports)}))
+                    scrap.report/render-json (fn [_ reports] (json/generate-string {:count (count reports)}))
                     scrap.cli/read-json-file (fn [_] {:reports [{:path "spec/a_spec.clj" :content-hash "old" :summary {:example-count 1}}]})
                     scrap.cli/write-baseline! (fn [path _]
                                                 (reset! written-path path)
