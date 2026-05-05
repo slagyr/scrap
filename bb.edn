@@ -1,0 +1,11 @@
+{:paths ["src" "spec"]
+ :deps {org.clojure/tools.reader {:mvn/version "1.4.2"}
+        speclj/speclj {:mvn/version "3.10.0"}}
+ :tasks {scrap  {:doc "Run scrap analysis"
+                 :task (apply (requiring-resolve 'scrap.core/-main) *command-line-args*)}
+         spec   {:doc "Run speclj tests"
+                 :task (apply (requiring-resolve 'speclj.main/-main) "-c" *command-line-args*)}
+         mutate {:doc "Run mutation testing"
+                 :task (shell "clj -M:mutate")}
+         crap   {:doc "Run crap4clj complexity analysis"
+                 :task (shell "clj -M:crap")}}}

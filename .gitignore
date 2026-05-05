@@ -1,2 +1,7 @@
 /target
 /.cpcache
+.clj-kondo/
+.idea/
+.lsp/
+.serena/
+*.iml
